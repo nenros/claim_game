@@ -12,8 +12,16 @@ export function loop() {
   }
 }
 
+export function handle_state(state) {
+  const new_state = next_state(state);
+  for (const command of state.commands) {
+    execute_command(command, state, ui_service)
+  }
+  return new_state;
+}
+
 function execute_command(command, state) {
-  switch (command) {
+  switch (command.cmd) {
     case 'move':
       const {x, y} = state.position
       return ui_service.move({x, y})
