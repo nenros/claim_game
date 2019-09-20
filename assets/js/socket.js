@@ -66,10 +66,13 @@ window.user_uuid = null
 let games = socket.channel("games:lobby", {name: "test"})
 
 const getGameData = function(){
-  games.push("game_data", {}).receive("ok", resp => window.players = resp)
+  games.push("game_data", {}).receive("ok", resp => {
+    delete resp[window.user_uuid]
+    window.players = resp})
 }
 
 games.on("player_joined", resp => {
+  if (resp.uuid === window.user_uuid) return
   window.players[resp.uuid] = resp
 })
 
@@ -78,7 +81,7 @@ games.on("player_disconnected", resp => {
 })
 
 games.on("player_position_changed", resp => {
-  const player = window.players[resp.uuid]
+  if (resp.uuid === window.user_uuid) return
   window.players[resp.uuid].position = [ resp.x, resp.y]
 })
 
