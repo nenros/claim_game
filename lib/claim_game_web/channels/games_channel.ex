@@ -10,6 +10,15 @@ defmodule ClaimGameWeb.GamesChannel do
     end
   end
 
+  def terminate({:shutdown, reason}, %{assigns: %{uuid: uuid}}) do
+    ClaimGame.GameServer.remove_player(uuid)
+  end
+
+  def handle_in("game_data", _payload, socket) do
+    {:ok, players} = ClaimGame.GameServer.get_players()
+    {:reply, {:ok, players}, socket}
+  end
+
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
   def handle_in("ping", payload, socket) do
