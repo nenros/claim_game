@@ -69,7 +69,14 @@ let games = socket.channel("games:lobby", {name: "test"})
 const getGameData = function(){
   games.push("game_data", {}).receive("ok", resp => {
     delete resp[window.user_uuid]
-    window.players = resp})
+    window.players = resp
+    for (var uuid in window.players) {
+      ui_service.add_player(uuid, "test");
+      const [x, y] = window.players[uuid].position;
+      ui_service.set_player_position(uuid, x, y);
+      console.log('added other: ' + uuid + ' at ' + x + ' ' + y);
+    }
+  })
 }
 
 games.on("player_joined", resp => {
@@ -78,6 +85,7 @@ games.on("player_joined", resp => {
   }
   console.log('joined: ' + resp.uuid);
   ui_service.add_player(resp.uuid, "test");
+  ui_service.move_player(resp.uuid, resp.x, resp.y);
   window.players[resp.uuid] = resp
 })
 

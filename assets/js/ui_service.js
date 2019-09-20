@@ -207,6 +207,12 @@ var movePlayer = function (uuid, x, y) {
   }
 }
 
+var setPlayerPosition = function (uuid, x, y) {
+  if (players[uuid]) {
+    players[uuid].position = new paper.Point(boardTransX + x, boardTransY + y - 30);
+  }
+}
+
 export const ui_service = {
   move: move,
   roll_dice: rollDice,
@@ -214,7 +220,8 @@ export const ui_service = {
   show_text: show_text,
   add_player: addPlayer,
   remove_player: removePlayer,
-  move_player: movePlayer
+  move_player: movePlayer,
+  set_player_position: setPlayerPosition
 };
 
 window.move = move;
