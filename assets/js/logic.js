@@ -87,12 +87,16 @@ export function next_state(old_state) {
       state.path = 1;
       state.step = move_up_to_end(state, dice.result)
       if (state.step == 0 || state.step == 1) {
+        state.path = 0
+        state.step = 0
         state.commands = [
           ...state.commands,
           cmd_move(state),
           cmd_show_text(state),
           create_move(0, 0)
         ]
+      } else {
+        state.commands = [...state.commands, cmd_move(state)]
       }
       break;
 
