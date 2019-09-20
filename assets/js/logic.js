@@ -12,8 +12,9 @@ const default_state = {
   cube: null,
   commands: [
     {cmd: 'roll_dice', result: 6},
-    {cmd: 'show_text', title: 'e-ticket', text: 'You got eticket'},
-    {cmd: 'move', result: {x:0, y:0}},
+    {cmd: 'move', x:0, y:0},
+    {cmd: 'show_card', name: 'gustav'},
+    {cmd: 'show_text', title: 'e-ticket', text: 'You got eticket'}
   ]
 }
 
