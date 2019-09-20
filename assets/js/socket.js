@@ -59,15 +59,25 @@ socket.connect()
 // channel.join()
 //   .receive("ok", resp => { console.log("Joined successfully", resp) })
 //   .receive("error", resp => { console.log("Unable to join", resp) })
+window.players = []
+window.user_uuid = null
+
 
 let games = socket.channel("games:lobby", {name: "test"})
 
-games.on("event", (event)=> {console.log(event)})
-
+const getGameData = function(){
+  games.push("game_data", {}).receive("ok", resp => window.players = resp)
+}
 
 games.join()
   .receive("ok", resp => {
+    getGameData()
+    window.user_uuid = resp.uuid
   })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
+
+window.updatePlayerPosition = (x, y)=>{
+ games.push("update_player_position", {x, y})
+};
 export default socket

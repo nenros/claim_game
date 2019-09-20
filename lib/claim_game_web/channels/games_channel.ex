@@ -10,18 +10,22 @@ defmodule ClaimGameWeb.GamesChannel do
     end
   end
 
-  # Channels can be used in a request/response fashion
-  # by sending replies to requests from the client
-  def handle_in("ping", payload, socket) do
-    {:reply, {:ok, payload}, socket}
+  def terminate({:shutdown, reason}, %{assigns: %{uuid: uuid}}) do
+    ClaimGame.GameServer.remove_player(uuid)
   end
 
-  # It is also common to receive messages from the client and
-  # broadcast to everyone in the current topic (games:lobby).
-  def handle_in("shout", payload, socket) do
-    broadcast socket, "shout", payload
+  def handle_in("game_data", _payload, socket) do
+    {:ok, players} = ClaimGame.GameServer.get_players()
+    {:reply, {:ok, players}, socket}
+  end
+
+  def handle_in("update_player_position", payload, socket) do
+    %{assigns: %{uuid: uuid}} = socket
+
+    ClaimGame.GameServer.update_player_position(uuid, {payload["x"], payload["y"]})
     {:noreply, socket}
   end
+
 
   # Add authorization logic here as required.
   defp authorized?(_payload) do
