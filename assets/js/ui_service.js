@@ -114,7 +114,7 @@ var move = function({x, y}, callback) {
   pawn.tweenTo(
     {position: new paper.Point(x, y - 70)},
     {duration: 300}
-  ).then(callback);
+  ).then(cb);
 }
 
 export const ui_service = {
