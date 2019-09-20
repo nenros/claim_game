@@ -7,7 +7,7 @@ export function loop() {
     const pawns = 1;
     state = next_state(state);
     for (const command of state.commands) {
-      execute_command(command, state)
+      execute_command(command, state, ui_service)
     }
   }
 }

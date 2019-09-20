@@ -22,5 +22,7 @@ console.log(game)
 window.logic = logic
 window.game = game
 
-// main game loop
-game.loop()
+
+window.onload = function () {
+  game.loop();
+}
