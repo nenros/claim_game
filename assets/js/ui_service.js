@@ -6,8 +6,8 @@ raster.bounds.left = 0
 raster.bounds.top = 0;
 
 var pawn = new paper.Raster('pawn_yellow');
-pawn.position = new paper.Point(300, 100);
-pawn.scale(0.5);
+pawn.position = new paper.Point(100, 100);
+pawn.scale(0.8);
 
 ///// THE DICE
 
@@ -77,6 +77,11 @@ function drawDice(n) {
 
 dice.visible = false;
 
+var rollDice = function () {
+  dice.position = new paper.Point(paper.view.bounds.right - 100, paper.view.bounds.bottom - 100);
+  dice.visible = true;
+}
+
 // window.tween = dice.tweenTo(
 //   { position: new paper.Point(500, 500) },
 //   { duration: 1000, start: false }
@@ -104,14 +109,17 @@ dice.visible = false;
 
 paper.view.draw();
 
-var move = function({x, y}) {
-  for(var i = 0; i < 100000000; ++i) {}
-  console.log('move to: ' + x + ' ' + y);
-  pawn.position = new paper.Point(x, y);
+var move = function({x, y}, callback) {
+  var cb = callback || (function () {});
+  pawn.tweenTo(
+    {position: new paper.Point(x, y - 70)},
+    {duration: 300}
+  ).then(callback);
 }
-
-window.move = move;
 
 export const ui_service = {
   move: move
 };
+
+window.move = move;
+window.rollDice = rollDice;
