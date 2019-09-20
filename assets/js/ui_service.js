@@ -1,13 +1,18 @@
 var canvas = document.getElementById('game-canvas');
 paper.setup(canvas);
 
-var raster = new paper.Raster('board');
-raster.bounds.left = 0
-raster.bounds.top = 0;
+var boardRaster = new paper.Raster('board');
+var boardWidht = 3544;
+var boardHeight = 2363;
+var boardTransX = 0;
+var boardTransY = 0;
+boardRaster.position = new paper.Point(boardWidht / 2, boardHeight / 2);
 
 var pawn = new paper.Raster('pawn_yellow');
 pawn.position = new paper.Point(100, 100);
 pawn.scale(0.8);
+
+var board = new paper.Group([boardRaster, pawn]);
 
 ///// THE DICE
 
@@ -82,16 +87,30 @@ var diceTime = 0;
 
 paper.view.draw();
 
+var translateBoard = function(x, y, callback) {
+  boardTransX = x;
+  boardTransY = y;
+  board.tweenTo(
+    {position: new paper.Point(boardWidht / 2 + x, boardHeight / 2 + y)},
+    {duration: 300}
+  );
+}
+
 var move = function({x, y}, callback) {
   window.updatePlayerPosition(x,y)
   var cb = callback || (function () {});
   pawn.tweenTo(
-    {position: new paper.Point(x, y - 70)},
-    {duration: 300}
-  ).then(cb);
+    {position: new paper.Point(boardTransX + x, boardTransY + y - 70)},
+    {duration: 100}
+  ).then(function () {
+    translateBoard(
+      paper.view.bounds.width / 2 - x,
+      paper.view.bounds.height / 2 - y,
+      cb);
+  });
 }
 
-var rollDice = function (value, callback) {
+var rollDice = function ({result: value}, callback) {
   var cb = callback || (function () {});
 
   dice.position = new paper.Point(paper.view.bounds.right - 100, paper.view.bounds.bottom - 100);
@@ -139,12 +158,12 @@ dice.onFrame = function (event) {
 function show_card({resource_name}, callback) {
   console.log('show_card', {resource_name})
   callback()
-} 
+}
 
 function show_text({title, text}, callback) {
   console.log('show_text', {title, text})
   callback()
-} 
+}
 
 export const ui_service = {
   move: move,
