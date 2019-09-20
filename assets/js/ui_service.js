@@ -1,13 +1,16 @@
 var canvas = document.getElementById('game-canvas');
 paper.setup(canvas);
 
-var raster = new paper.Raster('board');
-raster.bounds.left = 0
-raster.bounds.top = 0;
+var boardRaster = new paper.Raster('board');
+var boardWidht = 3544;
+var boardHeight = 2363;
+boardRaster.position = new paper.Point(boardWidht / 2, boardHeight / 2);
 
 var pawn = new paper.Raster('pawn_yellow');
 pawn.position = new paper.Point(100, 100);
 pawn.scale(0.8);
+
+var board = new paper.Group([boardRaster, pawn]);
 
 ///// THE DICE
 
@@ -82,12 +85,21 @@ var diceTime = 0;
 
 paper.view.draw();
 
+var translateView = function(x, y, callback) {
+  board.tweenTo(
+    {position: new paper.Point(boardWidht / 2 + x, boardHeight / 2 + y)},
+    {duration: 300}
+  );
+}
+
 var move = function({x, y}, callback) {
   var cb = callback || (function () {});
   pawn.tweenTo(
     {position: new paper.Point(x, y - 70)},
-    {duration: 300}
-  ).then(cb);
+    {duration: 100}
+  ).then(function () {
+    translateView(x, y, cb);
+  });
 }
 
 var rollDice = function (value, callback) {
