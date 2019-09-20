@@ -44,12 +44,12 @@ const mega_to_submission_red = [
 ]
 
 const submission_gustav = [
-  {xy: [1632, 875], cmd: 'gustav'},
+  {xy: [1632, 875], cmd: 'submission_gustav'},
   {xy: [604, 1169], cmd: 'lara_stop'}
 ]
 
 const submission_webform = [
-  {xy: [1633, 1058], cmd: 'none'},
+  {xy: [1633, 1058], cmd: 'submission_webform'},
   {xy: [1478, 1058], cmd: 'none'},
   {xy: [1309, 1058], cmd: 'none'},
   {xy: [1142, 1058], cmd: 'none'},
@@ -60,7 +60,7 @@ const submission_webform = [
 ]
 
 const submission_other = [
-  {xy: [1638, 1244], cmd: 'none'},
+  {xy: [1638, 1244], cmd: 'submission_other'},
   {xy: [1479, 1244], cmd: 'none'},
   {xy: [1310, 1244], cmd: 'none'},
   {xy: [1141, 1244], cmd: 'none'},
