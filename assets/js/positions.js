@@ -10,8 +10,8 @@ const start_positions = [
 ]
 
 const start_to_mega = [
-  {xy: [1240, 417], cmd: 'go_to_start'},
-  {xy: [1411, 417], cmd: 'go_to_start'},
+  {xy: [1240, 417], cmd: 'delay_less_3'},
+  {xy: [1411, 417], cmd: 'echo_charlie'},
   {xy: [1573, 417], cmd: 'none'},
   {xy: [1742, 417], cmd: 'none'},
   {xy: [1907, 417], cmd: 'none'},
