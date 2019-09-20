@@ -72,6 +72,18 @@ function move_up_to_end(state, add) {
   }
 }
 
+function is_on_last(state) {
+  return state.step == positions[state.path].length - 1
+}
+
+function move_if_on_last(state) {
+  if (is_on_last(state)) {
+    state.path += 1
+    state.step += 1
+  }
+  return state
+}
+
 export function next_state(old_state) {
   const state = Object.assign({}, old_state)
   const dice = cmd_roll_dice(state)
@@ -98,66 +110,81 @@ export function next_state(old_state) {
       } else {
         state.commands = [...state.commands, cmd_move(state)]
       }
+
+      if (is_on_last(state)) {
+        // check documents
+        move_if_on_last(state)
+      }
       break;
 
     // mega_to_submission_blue
     case 2:
       state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
+      move_if_on_last(state)
       break;
 
     // mega_to_submission_red
     case 3:
       state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
+      move_if_on_last(state)
       break;
 
     // submission_gustav
     case 4:
       state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
+      move_if_on_last(state)
       break;
 
     // submission_webform
     case 5:
       state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
+      move_if_on_last(state)
       break;
 
     // submission_other
     case 6:
       state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
+      move_if_on_last(state)
       break;
 
     // viable_on_hold
     case 7:
       state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
+      move_if_on_last(state)
       break;
 
     // ready_for_legal_assessment
     case 8:
       state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
+      move_if_on_last(state)
       break;
 
     // viable
     case 9:
       state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
+      move_if_on_last(state)
       break;
 
     // payout_blue
     case 10:
       state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
+      move_if_on_last(state)
       break;
 
     // payout_green
     case 11:
       state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
+      move_if_on_last(state)
       break;
 
     // palm_tre
