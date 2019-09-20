@@ -6,14 +6,13 @@ function random() {
 }
 
 const default_state = {
-  position: {x:0, y:0},
   path: 10,
   step: 0,
-  cube: null,
   commands: [
     {cmd: 'roll_dice', result: 6},
-    {cmd: 'show_text', title: 'e-ticket', text: 'You got eticket'},
-    {cmd: 'move', result: {x:0, y:0}},
+    {cmd: 'move', x:0, y:0},
+    {cmd: 'show_card', resource_name: 'gustav'},
+    {cmd: 'show_text', title: 'e-ticket', text: 'You got eticket'}
   ]
 }
 
@@ -21,13 +20,19 @@ export {positions};
 
 export function init_state() {
   const state = Object.assign({}, default_state)
-  state.position = new_position(state)
+  state.commands = [cmd_move(state)]
   return state
 }
 
 function new_position(state) {
   const [x, y] = positions[state.path][state.step].xy
   return {x: x, y: y}
+}
+
+function cmd_move(state) {
+  const command = new_position(state)
+  command['cmd'] = 'move'
+  return command
 }
 
 export function next_state(state) {
@@ -43,6 +48,12 @@ export function next_state(state) {
     new_state.step = 0
   }
   new_state.position = new_position(new_state)
+  new_state.commands = [
+    {cmd: 'roll_dice', result: 6},
+    cmd_move(new_state),
+    {cmd: 'show_card', resource_name: 'gustav'},
+    {cmd: 'show_text', title: 'e-ticket', text: 'You got eticket'}
+  ]
   
   return new_state
 }
