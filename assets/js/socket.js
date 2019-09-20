@@ -7,6 +7,7 @@
 // Pass the token on params as below. Or remove it
 // from the params if you are not using authentication.
 import {Socket} from "phoenix"
+import {ui_service} from "../js/ui_service.js";
 
 let socket = new Socket("/socket", {params: {token: window.userToken}})
 
@@ -66,8 +67,38 @@ window.user_uuid = null
 let games = socket.channel("games:lobby", {name: "test"})
 
 const getGameData = function(){
-  games.push("game_data", {}).receive("ok", resp => window.players = resp)
+  games.push("game_data", {}).receive("ok", resp => {
+    delete resp[window.user_uuid]
+    window.players = resp})
 }
+
+games.on("player_joined", resp => {
+  if (resp.uuid == window.user_uuid) {
+    return;
+  }
+  console.log('joined: ' + resp.uuid);
+  ui_service.add_player(resp.uuid, "test");
+  window.players[resp.uuid] = resp
+})
+
+games.on("player_disconnected", resp => {
+  if (resp.uuid == window.user_uuid) {
+    return;
+  }
+  console.log('left: ' + resp.uuid);
+  ui_service.remove_player(resp.uuid);
+  delete window.players[resp.uuid]
+})
+
+games.on("player_position_changed", resp => {
+  if (resp.uuid == window.user_uuid) {
+    return;
+  }
+  console.log('moved: ' + resp.uuid);
+  ui_service.move_player(resp.uuid, resp.x, resp.y);
+  const player = window.players[resp.uuid]
+  window.players[resp.uuid].position = [ resp.x, resp.y]
+})
 
 games.join()
   .receive("ok", resp => {
