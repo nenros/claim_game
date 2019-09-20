@@ -204,15 +204,15 @@ export function next_state(old_state) {
       break;
   }
 
-  if (positions[state.path][state.step+1]) {
-    state.step += 1
-  } else if(positions[state.path+1] && positions[state.path+1][0]) {
-    state.path += 1
-    state.step = 0
-  } else {
-    state.path = 0
-    state.step = 0
-  }
+  // if (positions[state.path][state.step+1]) {
+  //   state.step += 1
+  // } else if(positions[state.path+1] && positions[state.path+1][0]) {
+  //   state.path += 1
+  //   state.step = 0
+  // } else {
+  //   state.path = 0
+  //   state.step = 0
+  // }
 
   // state.commands = [
   //   dice,
