@@ -35,16 +35,28 @@ function cmd_roll_dice(state) {
   return {cmd: 'roll_dice', result: random(1, 6)}
 }
 
-function cmd_show_card(state) { 
+function cmd_show_card(state) {
+  const card_idx = random(0, 4)
+  const mega_cards = ['document_eticket', 'document_boarding_pass', 'document_id', 'document_proof_of_delay', 'document_other']
+  const mega_card = mega_cards[card_idx]
+
   return {
-    'gustav': create_show_card('gustav')
+    get_document_eticket: create_show_card('document_eticket'),
+    get_document_boarding_pass: create_show_card('document_boarding_pass'),
+    get_document_id: create_show_card('document_id'),
+    get_document_proof_of_delay: create_show_card('document_proof_of_delay'),
+    get_document_other: create_show_card('document_other'),
+    mega_stop: create_show_card(mega_card),
+    submission_gustav: create_show_card('gustav'),
+    submission_webform: create_show_card('webform'),
+    submission_other: create_show_card('other'),
   }[get_command(state)] || null
 }
 
 function cmd_show_text(state) {
   const cmd = get_command(state)
   return {
-    'gustav': create_show_text('Gustav', "You've got gustav card"),
+    'submission_gustav': create_show_text('Gustav', "You've got gustav card"),
     'start': create_show_text('Welcome', "Welcome on claim game")
   }[cmd] || null
 }
