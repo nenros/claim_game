@@ -10,8 +10,17 @@ import css from "../css/app.css"
 // Import dependencies
 //
 import "phoenix_html"
+import * as logic from "../js/logic.js";
+import * as game from "../js/game.js";
 
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
+
+console.log(game)
+window.logic = logic
+window.game = game
+
+// main game loop
+game.loop()
