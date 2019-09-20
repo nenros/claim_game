@@ -197,10 +197,10 @@ export function next_state(old_state) {
       break;
 
     // palm_tre
-    case 12:
+    default:
       state.path = 12
       state.step = 0
-      state.commands = [...state.commands,cmd_move(state)]
+      state.commands = [cmd_move(state)]
       break;
   }
 
