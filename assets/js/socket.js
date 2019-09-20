@@ -67,7 +67,9 @@ window.user_uuid = null
 let games = socket.channel("games:lobby", {name: "test"})
 
 const getGameData = function(){
-  games.push("game_data", {}).receive("ok", resp => window.players = resp)
+  games.push("game_data", {}).receive("ok", resp => {
+    delete resp[window.user_uuid]
+    window.players = resp})
 }
 
 games.on("player_joined", resp => {
