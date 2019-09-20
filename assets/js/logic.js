@@ -13,7 +13,7 @@ const default_state = {
   commands: [
     {cmd: 'roll_dice', result: 6},
     {cmd: 'move', x:0, y:0},
-    {cmd: 'show_card', name: 'gustav'},
+    {cmd: 'show_card', resource_name: 'gustav'},
     {cmd: 'show_text', title: 'e-ticket', text: 'You got eticket'}
   ]
 }
