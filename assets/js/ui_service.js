@@ -161,9 +161,22 @@ function show_card({resource_name}, callback) {
   callback()
 }
 
-function show_text({title, text}, callback) {
-  console.log('show_text', {title, text})
-  callback()
+function showText({title, text}, callback) {
+  var cb = callback || (function () {});
+
+  var msgBox = document.getElementById('message');
+  msgBox.style.display = 'block';
+
+  var msgTitle = document.getElementById('message-title');
+  msgTitle.innerHTML = title;
+
+  var msgContent = document.getElementById('message-content');
+  msgContent.innerHTML = text;
+
+  setTimeout(function() {
+    msgBox.style.display = 'none';
+    cb();
+  }, 3000);
 }
 
 // OTHER PLAYERS
@@ -217,12 +230,11 @@ export const ui_service = {
   move: move,
   roll_dice: rollDice,
   show_card: show_card,
-  show_text: show_text,
+  show_text: showText,
   add_player: addPlayer,
   remove_player: removePlayer,
   move_player: movePlayer,
   set_player_position: setPlayerPosition
 };
 
-window.move = move;
-window.rollDice = rollDice;
+window.showText = showText;
