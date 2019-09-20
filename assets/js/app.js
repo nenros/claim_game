@@ -10,8 +10,12 @@ import css from "../css/app.css"
 // Import dependencies
 //
 import "phoenix_html"
+import * as logic from "../js/logic.js";
 
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
+
+console.log(logic.positions, logic.init_state(), logic.next_state(logic.init_state()))
+window.logic = logic
