@@ -100,7 +100,7 @@ var move = function({x, y}, callback) {
   window.updatePlayerPosition(x,y)
   var cb = callback || (function () {});
   pawn.tweenTo(
-    {position: new paper.Point(boardTransX + x, boardTransY + y - 70)},
+    {position: new paper.Point(boardTransX + x, boardTransY + y - 100)},
     {duration: 100}
   ).then(function () {
     translateBoard(
@@ -165,11 +165,55 @@ function show_text({title, text}, callback) {
   callback()
 }
 
+// OTHER PLAYERS
+
+var pawnColors = [
+  'pawn_red',
+  'pawn_green',
+  'pawn_blue'
+];
+
+var players = {};
+
+var addPlayer = function (uuid, name) {
+  if (players[uuid]) {
+    players[uuid].remove();
+  }
+
+  var index = Math.floor(Math.random() * 3);
+
+  var player = new paper.Raster(pawnColors[index]);
+  player.position = new paper.Point(100, 100);
+  player.scale(0.8);
+
+  players[uuid] = player;
+}
+
+var removePlayer = function (uuid) {
+  if (players[uuid]) {
+    players[uuid].remove();
+  }
+
+  delete players[uuid];
+}
+
+var movePlayer = function (uuid, x, y) {
+  if (players[uuid]) {
+    players[uuid].tweenTo(
+      {position: new paper.Point(boardTransX + x, boardTransY + y - 30)},
+      {duration: 100}
+    )
+  }
+}
+
 export const ui_service = {
   move: move,
   roll_dice: rollDice,
   show_card: show_card,
-  show_text: show_text
+  show_text: show_text,
+  add_player: addPlayer,
+  remove_player: removePlayer,
+  move_player: movePlayer
 };
 
 window.move = move;
