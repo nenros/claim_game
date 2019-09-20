@@ -93,6 +93,7 @@ var translateView = function(x, y, callback) {
 }
 
 var move = function({x, y}, callback) {
+  window.updatePlayerPosition(x,y)
   var cb = callback || (function () {});
   pawn.tweenTo(
     {position: new paper.Point(x, y - 70)},
@@ -147,9 +148,21 @@ dice.onFrame = function (event) {
   }
 }
 
+function show_card({resource_name}, callback) {
+  console.log('show_card', {resource_name})
+  callback()
+} 
+
+function show_text({title, text}, callback) {
+  console.log('show_text', {title, text})
+  callback()
+} 
+
 export const ui_service = {
   move: move,
-  roll_dice: rollDice
+  roll_dice: rollDice,
+  show_card: show_card,
+  show_text: show_text
 };
 
 window.move = move;

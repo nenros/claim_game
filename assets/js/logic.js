@@ -12,8 +12,9 @@ const default_state = {
   cube: null,
   commands: [
     {cmd: 'roll_dice', result: 6},
-    {cmd: 'show_text', title: 'e-ticket', text: 'You got eticket'},
-    {cmd: 'move', result: {x:0, y:0}},
+    {cmd: 'move', x:0, y:0},
+    {cmd: 'show_card', resource_name: 'gustav'},
+    {cmd: 'show_text', title: 'e-ticket', text: 'You got eticket'}
   ]
 }
 
@@ -43,6 +44,12 @@ export function next_state(state) {
     new_state.step = 0
   }
   new_state.position = new_position(new_state)
+  new_state.commands = [
+    {cmd: 'roll_dice', result: 6},
+    {cmd: 'move', x: new_state.position.x, y: new_state.position.y},
+    {cmd: 'show_card', resource_name: 'gustav'},
+    {cmd: 'show_text', title: 'e-ticket', text: 'You got eticket'}
+  ]
   
   return new_state
 }
