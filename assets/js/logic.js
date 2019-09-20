@@ -9,7 +9,10 @@ const default_state = {
   position: {x:0, y:0},
   path: 0,
   step: 0,
-  cube: null
+  cube: null,
+  commands: [
+    'move'
+  ]
 }
 
 export {positions};
