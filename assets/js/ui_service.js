@@ -94,6 +94,7 @@ var translateBoard = function(x, y, callback) {
     {position: new paper.Point(boardWidht / 2 + x, boardHeight / 2 + y)},
     {duration: 300}
   );
+  callback();
 }
 
 var move = function({x, y}, callback) {
