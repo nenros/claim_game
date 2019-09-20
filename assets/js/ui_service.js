@@ -110,6 +110,7 @@ var rollDice = function () {
 paper.view.draw();
 
 var move = function({x, y}, callback) {
+  window.updatePlayerPosition(x,y)
   var cb = callback || (function () {});
   pawn.tweenTo(
     {position: new paper.Point(x, y - 70)},
