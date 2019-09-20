@@ -69,6 +69,19 @@ const getGameData = function(){
   games.push("game_data", {}).receive("ok", resp => window.players = resp)
 }
 
+games.on("player_joined", resp => {
+  window.players[resp.uuid] = resp
+})
+
+games.on("player_disconnected", resp => {
+  delete window.players[resp.uuid]
+})
+
+games.on("player_position_changed", resp => {
+  const player = window.players[resp.uuid]
+  window.players[resp.uuid].position = [ resp.x, resp.y]
+})
+
 games.join()
   .receive("ok", resp => {
     getGameData()
