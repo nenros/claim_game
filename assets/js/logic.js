@@ -1,5 +1,5 @@
 import { positions } from './positions.js'
-import { cmd_show_text, create_show_text } from './show_text.js'
+import { cmd_show_text } from './show_text.js'
 
 const default_state = {
   path: 0,
@@ -159,12 +159,12 @@ export function next_state(old_state) {
     state.step = 0
   }
 
-  // state.commands = [
-  //   dice,
-  //   cmd_move(state),
-  //   cmd_show_card(state),
-  //   cmd_show_text(state)
-  // ].filter(Boolean)
+  state.commands = [
+    dice,
+    cmd_move(state),
+    cmd_show_card(state),
+    cmd_show_text(state)
+  ].filter(Boolean)
   
   return state
 }
