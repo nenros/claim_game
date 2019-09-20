@@ -2,11 +2,11 @@ var canvas = document.getElementById('game-canvas');
 paper.setup(canvas);
 
 var boardRaster = new paper.Raster('board');
-var boardWidht = 3544;
+var boardWidth = 3544;
 var boardHeight = 2363;
 var boardTransX = 0;
 var boardTransY = 0;
-boardRaster.position = new paper.Point(boardWidht / 2, boardHeight / 2);
+boardRaster.position = new paper.Point(boardWidth / 2, boardHeight / 2);
 
 var pawn = new paper.Raster('pawn_yellow');
 pawn.position = new paper.Point(100, 100);
@@ -88,14 +88,28 @@ var diceTime = 0;
 paper.view.draw();
 
 var translateBoard = function(x, y, callback) {
+  if (x > 0) {
+    x = 0;
+  }
+  if (x < -boardWidth + paper.view.bounds.width) {
+    x = -boardWidth + paper.view.bounds.width
+  }
+  if (y > 0) {
+    y = 0;
+  }
+  if (y < -boardHeight + paper.view.bounds.height) {
+    y = -boardHeight + paper.view.bounds.height
+  }
   boardTransX = x;
   boardTransY = y;
   board.tweenTo(
-    {position: new paper.Point(boardWidht / 2 + x, boardHeight / 2 + y)},
+    {position: new paper.Point(boardWidth / 2 + x, boardHeight / 2 + y)},
     {duration: 300}
   );
   callback();
 }
+
+window.translateBoard = translateBoard;
 
 var move = function({x, y}, callback) {
   window.updatePlayerPosition(x,y)
