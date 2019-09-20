@@ -4,27 +4,53 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>ClaimGame · Phoenix Framework</title>
+    <title>The Claim Game (by BeeGees)</title>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.2/paper-full.min.js" integrity="sha256-xT9jNx8tzepeeLwMeN985td1KYlkEOZJ/ReF9XMLoMU=" crossorigin="anonymous"></script>
+
+    <style>
+      * {
+        font-family: 'Roboto', sans-serif;
+      }
+
+      html, body {
+          height: 100%;
+      }
+
+      /* Scale canvas with resize attribute to full size */
+      canvas[resize] {
+        width: 100%;
+        height: 100%;
+      }
+
+      canvas {
+        border: 10px solid black;
+      }
+    </style>
   </head>
   <body>
-    <header>
-      <section class="container">
-        <nav role="navigation">
-          <ul>
-            <li><a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a></li>
-          </ul>
-        </nav>
-        <a href="http://phoenixframework.org/" class="phx-logo">
-          <img src="<%= Routes.static_path(@conn, "/images/phoenix.png") %>" alt="Phoenix Framework Logo"/>
-        </a>
-      </section>
-    </header>
-    <main role="main" class="container">
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-      <%= render @view_module, @view_template, assigns %>
-    </main>
+    <canvas id="game-canvas" resize="true" keepalive="true">
+    </canvas>
+    <div id='testdiv' style='height: 1in; left: -100%; position: absolute; top: -100%; width: 1in;'></div>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    <!-- Define inlined PaperScript associate it with myCanvas -->
+    <script type="text/paperscript" canvas="game-canvas">
+      // Create a Paper.js Path to draw a line into it:
+      var path = new Path();
+      // Give the stroke a color
+      path.strokeColor = 'black';
+      var start = new Point(100, 100);
+      // Move to start and draw a line from there
+      path.moveTo(start);
+      // Note the plus operator on Point objects.
+      // PaperScript does that for us, and much more!
+      path.lineTo(start + [ 100, -50 ]);
+    </script>
   </body>
 </html>
