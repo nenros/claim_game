@@ -9,7 +9,8 @@ const default_state = {
     {cmd: 'move', x:0, y:0},
     {cmd: 'show_card', resource_name: 'gustav'},
     {cmd: 'show_text', title: 'e-ticket', text: 'You got eticket'}
-  ]
+  ],
+  cards: []
 }
 
 window.positions = positions
@@ -62,6 +63,15 @@ function create_show_card(name) {
   return {cmd: 'show_card', resource_name: name}
 }
 
+function move_up_to_end(state, add) {
+  const new_step = state.step + add - 1
+  if (new_step < positions[state.path].length) {
+    return new_step
+  } else {
+    return positions[state.path].length - 1
+  }
+}
+
 export function next_state(old_state) {
   const state = Object.assign({}, old_state)
   const dice = cmd_roll_dice(state)
@@ -71,76 +81,78 @@ export function next_state(old_state) {
     // start_positions
     case 0:
       state.step = 0
+
     // start_to_mega
     case 1:
       state.path = 1;
-      state.step += dice.result - 1
+      state.step = move_up_to_end(state, dice.result)
       if (state.step == 0 || state.step == 1) {
         state.commands = [
           ...state.commands,
           cmd_move(state),
           cmd_show_text(state),
+          create_move(0, 0)
         ]
       }
       break;
 
     // mega_to_submission_blue
     case 2:
-      state.step += dice.result - 1
+      state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
       break;
 
     // mega_to_submission_red
     case 3:
-      state.step += dice.result - 1
+      state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
       break;
 
     // submission_gustav
     case 4:
-      state.step += dice.result - 1
+      state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
       break;
 
     // submission_webform
     case 5:
-      state.step += dice.result - 1
+      state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
       break;
 
     // submission_other
     case 6:
-      state.step += dice.result - 1
+      state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
       break;
 
     // viable_on_hold
     case 7:
-      state.step += dice.result - 1
+      state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
       break;
 
     // ready_for_legal_assessment
     case 8:
-      state.step += dice.result - 1
+      state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
       break;
 
     // viable
     case 9:
-      state.step += dice.result - 1
+      state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
       break;
 
     // payout_blue
     case 10:
-      state.step += dice.result - 1
+      state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
       break;
 
     // payout_green
     case 11:
-      state.step += dice.result - 1
+      state.step = move_up_to_end(state, dice.result)
       state.commands = [...state.commands, cmd_move(state)]
       break;
 
@@ -159,13 +171,14 @@ export function next_state(old_state) {
     state.step = 0
   }
 
-  state.commands = [
-    dice,
-    cmd_move(state),
-    cmd_show_card(state),
-    cmd_show_text(state)
-  ].filter(Boolean)
-  
+  // state.commands = [
+  //   dice,
+  //   cmd_move(state),
+  //   cmd_show_card(state),
+  //   cmd_show_text(state)
+  // ].filter(Boolean)
+  state.commands = state.commands.filter(Boolean)
+
   return state
 }
 
