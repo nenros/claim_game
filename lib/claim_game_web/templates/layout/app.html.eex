@@ -83,13 +83,14 @@
     <img id="pawn_green" src="images/pawn_green.png">
     <img id="pawn_red" src="images/pawn_red.png">
     <img id="pawn_blue" src="images/pawn_blue.png">
+    <img class="card-img" id="document_boarding_pass" src="images/boarding_pass.jpg">
+    <img class="card-img" id="document_id" src="images/id.jpg">
+    <img class="card-img" id="document_eticket" src="images/e_ticket.jpg">
+    <img class="card-img" id="document_other" src="images/other_document.jpg">
+    <img class="card-img" id="document_proof_of_delay" src="images/proof_of_delay.jpg">
     <img class="card-img" id="gustav" src="images/gustav.png">
-    <img class="card-img" id="boarding_pass" src="images/boarding_pass.jpg">
-    <img class="card-img" id="id" src="images/id.jpg">
-    <img class="card-img" id="other_document" src="images/other_document.jpg">
-    <img class="card-img" id="other_submission" src="images/other_submission.jpg">
-    <img class="card-img" id="proof_of_delay" src="images/proof_of_delay.jpg">
     <img class="card-img" id="webform" src="images/webform.jpg">
+    <img class="card-img" id="other" src="images/other_submission.jpg">
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

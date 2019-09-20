@@ -59,7 +59,7 @@ function cmd_show_card(state) {
   }[get_command(state)] || null
 }
 
-function create_show_card(name) { 
+function create_show_card(name) {
   return {cmd: 'show_card', resource_name: name}
 }
 

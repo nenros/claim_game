@@ -162,7 +162,7 @@ function showCard({resource_name}, callback) {
   var card = document.getElementById(resource_name);
   card.style.display = 'block';
 
-  settimeout(function () {
+  setTimeout(function () {
     card.style.display = 'none';
     cb();
   },
