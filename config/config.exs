@@ -10,7 +10,7 @@ use Mix.Config
 # Configures the endpoint
 config :claim_game, ClaimGameWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "3T+Xx3Nfyh3KDXT/g7qLLri8uTMatyuviF4dQsoVIQTyujADneqWG/047sTfr8vf",
+  secret_key_base: "F/IYmWVnHg7SPpkk1b6kP3rleNalpqJTLF3cd1UR9QTfJf21SClp3OPx2V00R1Xm",
   render_errors: [view: ClaimGameWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: ClaimGame.PubSub, adapter: Phoenix.PubSub.PG2]
 

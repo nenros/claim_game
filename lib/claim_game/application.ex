@@ -9,7 +9,8 @@ defmodule ClaimGame.Application do
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
-      ClaimGameWeb.Endpoint
+      ClaimGameWeb.Endpoint,
+      ClaimGame.GameServer
       # Starts a worker by calling: ClaimGame.Worker.start_link(arg)
       # {ClaimGame.Worker, arg},
     ]
