@@ -184,7 +184,7 @@ function showText({title, text}, callback) {
   setTimeout(function() {
     msgBox.style.display = 'none';
     cb();
-  }, 3000);
+  }, 5000);
 }
 
 // OTHER PLAYERS
