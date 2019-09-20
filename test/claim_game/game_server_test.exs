@@ -9,7 +9,7 @@ defmodule ClaimGame.GameServerTest do
 
   test "should init server with empty player list" do
     {:ok, state } = GameServer.init([])
-    assert %{players: []} = state
+    assert %{players: %{}} = state
   end
 
   describe "#add_player/2" do

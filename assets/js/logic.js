@@ -1,4 +1,5 @@
 import { positions } from './positions.js'
+import { cmd_show_text, create_show_text } from './show_text.js'
 
 const default_state = {
   path: 0,
@@ -16,18 +17,22 @@ window.positions = positions
 export function init_state() {
   const state = Object.assign({}, default_state)
   state.commands = [
-    cmd_move(state)
+    cmd_move(state),
+    cmd_show_text(state)
   ]
   return state
 }
 
-
-function get_command(state) {
+export function get_command(state) {
   return positions[state.path][state.step].cmd || 'none'
 }
 
 function cmd_move(state) {
-  const [x, y] = positions[state.path][state.step].xy
+  return create_move(state.path, state.step)
+}
+
+function create_move(path, step) {
+  const [x, y] = positions[path][step].xy
   return {cmd: 'move', x: x, y: y}
 }
 
@@ -53,45 +58,115 @@ function cmd_show_card(state) {
   }[get_command(state)] || null
 }
 
-function cmd_show_text(state) {
-  const cmd = get_command(state)
-  return {
-    'submission_gustav': create_show_text('Gustav', "You've got gustav card"),
-    'start': create_show_text('Welcome', "Welcome on claim game")
-  }[cmd] || null
-}
-
 function create_show_card(name) { 
   return {cmd: 'show_card', resource_name: name}
 }
 
-function create_show_text(title, text) {
-  return {cmd: 'show_text', title, text} 
-}
+export function next_state(old_state) {
+  const state = Object.assign({}, old_state)
+  const dice = cmd_roll_dice(state)
+  state.commands = [dice]
 
-export function next_state(state) {
-  const new_state = Object.assign({}, state)
+  switch (state.path) {
+    // start_positions
+    case 0:
+      state.step = 0
+    // start_to_mega
+    case 1:
+      state.path = 1;
+      state.step += dice.result - 1
+      if (state.step == 0 || state.step == 1) {
+        state.commands = [
+          ...state.commands,
+          cmd_move(state),
+          cmd_show_text(state),
+        ]
+      }
+      break;
 
-  const dice = cmd_roll_dice(new_state)
+    // mega_to_submission_blue
+    case 2:
+      state.step += dice.result - 1
+      state.commands = [...state.commands, cmd_move(state)]
+      break;
 
-  if (positions[state.path][state.step+1]) {
-    new_state.step += 1
-  } else if(positions[state.path+1] && positions[state.path+1][0]) {
-    new_state.path += 1
-    new_state.step = 0
-  } else {
-    new_state.path = 0
-    new_state.step = 0
+    // mega_to_submission_red
+    case 3:
+      state.step += dice.result - 1
+      state.commands = [...state.commands, cmd_move(state)]
+      break;
+
+    // submission_gustav
+    case 4:
+      state.step += dice.result - 1
+      state.commands = [...state.commands, cmd_move(state)]
+      break;
+
+    // submission_webform
+    case 5:
+      state.step += dice.result - 1
+      state.commands = [...state.commands, cmd_move(state)]
+      break;
+
+    // submission_other
+    case 6:
+      state.step += dice.result - 1
+      state.commands = [...state.commands, cmd_move(state)]
+      break;
+
+    // viable_on_hold
+    case 7:
+      state.step += dice.result - 1
+      state.commands = [...state.commands, cmd_move(state)]
+      break;
+
+    // ready_for_legal_assessment
+    case 8:
+      state.step += dice.result - 1
+      state.commands = [...state.commands, cmd_move(state)]
+      break;
+
+    // viable
+    case 9:
+      state.step += dice.result - 1
+      state.commands = [...state.commands, cmd_move(state)]
+      break;
+
+    // payout_blue
+    case 10:
+      state.step += dice.result - 1
+      state.commands = [...state.commands, cmd_move(state)]
+      break;
+
+    // payout_green
+    case 11:
+      state.step += dice.result - 1
+      state.commands = [...state.commands, cmd_move(state)]
+      break;
+
+    // palm_tre
+    case 12:
+      break;
   }
 
-  new_state.commands = [
-    cmd_roll_dice(new_state),
-    cmd_move(new_state),
-    cmd_show_card(new_state),
-    cmd_show_text(new_state)
-  ].filter(Boolean)
+  if (positions[state.path][state.step+1]) {
+    state.step += 1
+  } else if(positions[state.path+1] && positions[state.path+1][0]) {
+    state.path += 1
+    state.step = 0
+  } else {
+    state.path = 0
+    state.step = 0
+  }
+
+  // state.commands = [
+  //   dice,
+  //   cmd_move(state),
+  //   cmd_show_card(state),
+  //   cmd_show_text(state)
+  // ].filter(Boolean)
   
-  return new_state
+  return state
 }
 
 
