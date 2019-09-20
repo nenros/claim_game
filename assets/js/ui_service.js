@@ -136,9 +136,21 @@ dice.onFrame = function (event) {
   }
 }
 
+function show_card({resource_name}, callback) {
+  console.log('show_card', {resource_name})
+  callback()
+} 
+
+function show_text({title, text}, callback) {
+  console.log('show_text', {title, text})
+  callback()
+} 
+
 export const ui_service = {
   move: move,
-  roll_dice: rollDice
+  roll_dice: rollDice,
+  show_card: show_card,
+  show_text: show_text
 };
 
 window.move = move;
