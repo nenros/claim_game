@@ -9,7 +9,7 @@ var boardTransY = 0;
 boardRaster.position = new paper.Point(boardWidth / 2, boardHeight / 2);
 
 var pawn = new paper.Raster('pawn_yellow');
-pawn.position = new paper.Point(100, 100);
+pawn.position = new paper.Point(467, 390);
 pawn.scale(0.8);
 
 var board = new paper.Group([boardRaster, pawn]);
