@@ -7,11 +7,13 @@ function random() {
 
 const default_state = {
   position: {x:0, y:0},
-  path: 0,
+  path: 10,
   step: 0,
   cube: null,
   commands: [
-    'move'
+    {cmd: 'roll_dice', result: 6},
+    {cmd: 'show_text', title: 'e-ticket', text: 'You got eticket'},
+    {cmd: 'move', result: {x:0, y:0}},
   ]
 }
 
@@ -33,7 +35,7 @@ export function next_state(state) {
 
   if (positions[state.path][state.step+1]) {
     new_state.step += 1
-  } else if(positions[state.path+1][0]) {
+  } else if(positions[state.path+1] && positions[state.path+1][0]) {
     new_state.path += 1
     new_state.step = 0
   } else {

@@ -143,7 +143,7 @@ const payout_green = [
 ]
 
 const palm_tree = [
-  {xy: [3392, 2094], cmd: 'palm_tree'}
+  {xy: [3392, 2094], cmd: 'payout_stop'}
 ]
 
 
