@@ -16,7 +16,8 @@ window.positions = positions
 export function init_state() {
   const state = Object.assign({}, default_state)
   state.commands = [
-    cmd_move(state)
+    cmd_move(state),
+    cmd_show_text(state)
   ]
   return state
 }
@@ -56,7 +57,6 @@ function cmd_show_card(state) {
 function cmd_show_text(state) {
   const cmd = get_command(state)
   return {
-    'submission_gustav': create_show_text('Gustav', "You've got gustav card"),
     'start': create_show_text('Welcome', "Welcome on claim game")
   }[cmd] || null
 }
@@ -69,29 +69,94 @@ function create_show_text(title, text) {
   return {cmd: 'show_text', title, text} 
 }
 
-export function next_state(state) {
-  const new_state = Object.assign({}, state)
+export function next_state(old_state) {
+  const state = Object.assign({}, old_state)
+  const dice = cmd_roll_dice(state)
 
-  const dice = cmd_roll_dice(new_state)
+  switch (state.path) {
+    // start_positions
+    case 0:
+      state.step = 0
+    // start_to_mega
+    case 1:
+      state.path = 1;
+      state.step += dice.result
+      break;
 
-  if (positions[state.path][state.step+1]) {
-    new_state.step += 1
-  } else if(positions[state.path+1] && positions[state.path+1][0]) {
-    new_state.path += 1
-    new_state.step = 0
-  } else {
-    new_state.path = 0
-    new_state.step = 0
+    // mega_to_submission_blue
+    case 2:
+      state.step += dice.result
+      break;
+
+    // mega_to_submission_red
+    case 3:
+      state.step += dice.result
+      break;
+
+    // submission_gustav
+    case 4:
+      state.step += dice.result
+      break;
+
+    // submission_webform
+    case 5:
+      state.step += dice.result
+      break;
+
+    // submission_other
+    case 6:
+      state.step += dice.result
+      break;
+
+    // viable_on_hold
+    case 7:
+      state.step += dice.result
+      break;
+
+    // ready_for_legal_assessment
+    case 8:
+      state.step += dice.result
+      break;
+
+    // viable
+    case 9:
+      state.step += dice.result
+      break;
+
+    // payout_blue
+    case 10:
+      state.step += dice.result
+      break;
+
+    // payout_green
+    case 11:
+      state.step += dice.result
+      break;
+
+    // palm_tre
+    case 12:
+      break;
+
   }
 
-  new_state.commands = [
-    cmd_roll_dice(new_state),
-    cmd_move(new_state),
-    cmd_show_card(new_state),
-    cmd_show_text(new_state)
+  if (positions[state.path][state.step+1]) {
+    state.step += 1
+  } else if(positions[state.path+1] && positions[state.path+1][0]) {
+    state.path += 1
+    state.step = 0
+  } else {
+    state.path = 0
+    state.step = 0
+  }
+
+  state.commands = [
+    dice,
+    cmd_move(state),
+    cmd_show_card(state),
+    cmd_show_text(state)
   ].filter(Boolean)
   
-  return new_state
+  return state
 }
 
 
