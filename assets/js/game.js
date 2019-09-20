@@ -24,6 +24,7 @@ function execute_command(command, state) {
   switch (command.cmd) {
     case 'move':
       const {x, y} = state.position
+      window.updatePlayerPosition(x,y)
       return ui_service.move({x, y})
     default:
       return console.log('unknown command', command, state, ui_service)

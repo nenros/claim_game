@@ -60,6 +60,8 @@ socket.connect()
 //   .receive("ok", resp => { console.log("Joined successfully", resp) })
 //   .receive("error", resp => { console.log("Unable to join", resp) })
 window.players = []
+window.user_uuid = null
+
 
 let games = socket.channel("games:lobby", {name: "test"})
 
@@ -70,11 +72,12 @@ const getGameData = function(){
 games.join()
   .receive("ok", resp => {
     getGameData()
-    console.log(players)
-    console.log("User connected", resp)
+    window.user_uuid = resp.uuid
   })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
 
-
+window.updatePlayerPosition = (x, y)=>{
+ games.push("update_player_position", {x, y})
+};
 export default socket
