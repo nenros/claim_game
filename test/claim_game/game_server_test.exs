@@ -7,7 +7,16 @@ defmodule ClaimGame.GameServerTest do
 
   doctest GameServer
 
-  test "module exists" do
-    assert is_list(GameServer.module_info())
+  test "should init server with empty player list" do
+    {:ok, state } = GameServer.init([])
+    assert %{players: []} = state
+  end
+
+  describe "#add_player/2" do
+
+  end
+
+  describe "#remove_player/1" do
+
   end
 end
