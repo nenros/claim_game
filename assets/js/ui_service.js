@@ -156,9 +156,17 @@ dice.onFrame = function (event) {
   }
 }
 
-function show_card({resource_name}, callback) {
-  console.log('show_card', {resource_name})
-  callback()
+function showCard({resource_name}, callback) {
+  var cb = callback || (function () {});
+
+  var card = document.getElementById(resource_name);
+  card.style.display = 'block';
+
+  settimeout(function () {
+    card.style.display = 'none';
+    cb();
+  },
+  3000);
 }
 
 function showText({title, text}, callback) {
@@ -229,7 +237,7 @@ var setPlayerPosition = function (uuid, x, y) {
 export const ui_service = {
   move: move,
   roll_dice: rollDice,
-  show_card: show_card,
+  show_card: showCard,
   show_text: showText,
   add_player: addPlayer,
   remove_player: removePlayer,
