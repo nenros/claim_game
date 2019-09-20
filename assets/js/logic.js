@@ -1,12 +1,7 @@
 import { positions } from './positions.js'
 
-
-function random() {
-
-}
-
 const default_state = {
-  path: 10,
+  path: 0,
   step: 0,
   commands: [
     {cmd: 'roll_dice', result: 6},
@@ -16,27 +11,56 @@ const default_state = {
   ]
 }
 
-export {positions};
+window.positions = positions
 
 export function init_state() {
   const state = Object.assign({}, default_state)
-  state.commands = [cmd_move(state)]
+  state.commands = [
+    cmd_move(state)
+  ]
   return state
 }
 
-function new_position(state) {
-  const [x, y] = positions[state.path][state.step].xy
-  return {x: x, y: y}
+
+function get_command(state) {
+  return positions[state.path][state.step].cmd || 'none'
 }
 
 function cmd_move(state) {
-  const command = new_position(state)
-  command['cmd'] = 'move'
-  return command
+  const [x, y] = positions[state.path][state.step].xy
+  return {cmd: 'move', x: x, y: y}
+}
+
+function cmd_roll_dice(state) {
+  return {cmd: 'roll_dice', result: random(1, 6)}
+}
+
+function cmd_show_card(state) { 
+  return {
+    'gustav': create_show_card('gustav')
+  }[get_command(state)] || null
+}
+
+function cmd_show_text(state) {
+  const cmd = get_command(state)
+  return {
+    'gustav': create_show_text('Gustav', "You've got gustav card"),
+    'start': create_show_text('Welcome', "Welcome on claim game")
+  }[cmd] || null
+}
+
+function create_show_card(name) { 
+  return {cmd: 'show_card', resource_name: name}
+}
+
+function create_show_text(title, text) {
+  return {cmd: 'show_text', title, text} 
 }
 
 export function next_state(state) {
   const new_state = Object.assign({}, state)
+
+  const dice = cmd_roll_dice(new_state)
 
   if (positions[state.path][state.step+1]) {
     new_state.step += 1
@@ -47,13 +71,18 @@ export function next_state(state) {
     new_state.path = 0
     new_state.step = 0
   }
-  new_state.position = new_position(new_state)
+
   new_state.commands = [
-    {cmd: 'roll_dice', result: 6},
+    cmd_roll_dice(new_state),
     cmd_move(new_state),
-    {cmd: 'show_card', resource_name: 'gustav'},
-    {cmd: 'show_text', title: 'e-ticket', text: 'You got eticket'}
-  ]
+    cmd_show_card(new_state),
+    cmd_show_text(new_state)
+  ].filter(Boolean)
   
   return new_state
+}
+
+
+function random(min, max) {
+  return Math.floor((Math.random() * (max - min + 1)) + min)
 }
