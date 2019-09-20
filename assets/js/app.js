@@ -26,6 +26,7 @@ window.game = game
 
 
 let state = logic.init_state();
+game.run_state(state)
 
 window.addEventListener("keydown", event => {
   if (event.isComposing || event.keyCode === 229) {
