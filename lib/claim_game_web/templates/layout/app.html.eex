@@ -42,6 +42,10 @@
     <canvas id="game-canvas" resize="true" keepalive="true">
     </canvas>
     <img id="board" src="images/board.jpg">
+    <img id="pawn_yellow" src="images/pawn_yellow.png">
+    <img id="pawn_green" src="images/pawn_green.png">
+    <img id="pawn_red" src="images/pawn_red.png">
+    <img id="pawn_blue" src="images/pawn_blue.png">
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

@@ -25,5 +25,5 @@ window.game = game
 
 
 window.onload = function () {
-  game.loop();
+  // game.loop();
 }

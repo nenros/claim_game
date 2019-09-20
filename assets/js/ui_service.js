@@ -5,8 +5,9 @@ var raster = new paper.Raster('board');
 raster.bounds.left = 0
 raster.bounds.top = 0;
 
-var pawn = new paper.Path.Circle(new paper.Point(100, 100), 50);
-pawn.fillColor = 'black';
+var pawn = new paper.Raster('pawn_yellow');
+pawn.position = new paper.Point(300, 100);
+pawn.scale(0.5);
 
 ///// THE DICE
 
