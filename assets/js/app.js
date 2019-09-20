@@ -37,6 +37,5 @@ window.addEventListener("keydown", event => {
 });
 
 
-paper.view.onFrame((event) => {
-
-})
+paper.view.onFrame = function(event) {
+}
