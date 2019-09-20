@@ -1,8 +1,8 @@
 import {positions, init_state, next_state} from "../js/logic.js";
+import {ui_service} from "../js/ui_service.js";
 
 export function loop() {
   let state = init_state();
-  const ui_service = {move: console.log};
   while (true) {
     const pawns = 1;
     state = next_state(state);
@@ -12,8 +12,16 @@ export function loop() {
   }
 }
 
-function execute_command(command, state, ui_service) {
-  switch (command) {
+export function handle_state(state) {
+  const new_state = next_state(state);
+  for (const command of state.commands) {
+    execute_command(command, state, ui_service)
+  }
+  return new_state;
+}
+
+function execute_command(command, state) {
+  switch (command.cmd) {
     case 'move':
       const {x, y} = state.position
       return ui_service.move({x, y})
@@ -21,4 +29,3 @@ function execute_command(command, state, ui_service) {
       return console.log('unknown command', command, state, ui_service)
   }
 }
-

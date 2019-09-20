@@ -12,6 +12,7 @@ import css from "../css/app.css"
 import "phoenix_html"
 import * as logic from "../js/logic.js";
 import * as game from "../js/game.js";
+import {positions, init_state, next_state} from "../js/logic.js";
 
 // Import local files
 //
@@ -23,5 +24,19 @@ console.log(game)
 window.logic = logic
 window.game = game
 
-// main game loop
-game.loop()
+
+let state = logic.init_state();
+
+window.addEventListener("keydown", event => {
+  if (event.isComposing || event.keyCode === 229) {
+    return;
+  }
+  if (event.keyCode === 32) {
+    state = game.handle_state(state)
+  }
+});
+
+
+paper.view.onFrame((event) => {
+
+})
