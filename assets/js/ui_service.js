@@ -76,36 +76,9 @@ function drawDice(n) {
 }
 
 dice.visible = false;
-
-var rollDice = function () {
-  dice.position = new paper.Point(paper.view.bounds.right - 100, paper.view.bounds.bottom - 100);
-  dice.visible = true;
-}
-
-// window.tween = dice.tweenTo(
-//   { position: new paper.Point(500, 500) },
-//   { duration: 1000, start: false }
-// );
-
-// window.tween.start();
-
-// window.dice = dice;
-
-// var diceValue = 1;
-// drawDice(diceValue);
-
-// var diceTime = 0;
-
-// function rollDice(current) {
-//   var n = Math.floor((Math.random() * 6) + 1);
-//   if (n == current) {
-//     return rollDice(current);
-//   } else {
-//     return n;
-//   }
-// }
-
-// dice.visible = false;
+var diceRolling = false;
+var diceValue = 1;
+var diceTime = 0;
 
 paper.view.draw();
 
@@ -118,8 +91,54 @@ var move = function({x, y}, callback) {
   ).then(cb);
 }
 
+var rollDice = function (value, callback) {
+  var cb = callback || (function () {});
+
+  dice.position = new paper.Point(paper.view.bounds.right - 100, paper.view.bounds.bottom - 100);
+  drawDice(diceValue);
+
+  dice.visible = true;
+  diceRolling = true;
+
+  var dx = Math.floor((Math.random() * 200) + 100);
+  var dy = Math.floor((Math.random() * 200) + 100);
+
+  dice.tweenTo(
+    {position: new paper.Point(dice.position.x - dx, dice.position.y - dy)},
+    {duration: 500}
+  ).then(function() {
+    diceRolling = false;
+    diceValue = value;
+    drawDice(diceValue);
+    setTimeout(function() {
+      dice.visible = false;
+      cb();
+    }, 1000);
+  });
+}
+
+function tempDiceValue(current) {
+  var n = Math.floor((Math.random() * 6) + 1);
+  if (n == current) {
+    return tempDiceValue(current);
+  } else {
+    return n;
+  }
+}
+
+dice.onFrame = function (event) {
+  if (diceRolling) {
+    if (event.time - diceTime > 0.1) {
+      diceTime = event.time;
+      diceValue = tempDiceValue(diceValue);
+      drawDice(diceValue);
+    }
+  }
+}
+
 export const ui_service = {
-  move: move
+  move: move,
+  roll_dice: rollDice
 };
 
 window.move = move;
