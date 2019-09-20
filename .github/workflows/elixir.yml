@@ -19,12 +19,12 @@ jobs:
         mix deps.get
     - name: Run Tests
       run: mix test
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    - uses: actions/checkout@v1
-    - name: Deploy to gigalixir
-      run: |
-        git remote add gigalixir ${{secrets.gigalixir}}
-        git push gigalixir master
+#  deploy:
+#    runs-on: ubuntu-latest
+#    needs: build
+#    steps:
+#    - uses: actions/checkout@v1
+#    - name: Deploy to gigalixir
+#      run: |
+#        git remote add gigalixir ${{secrets.gigalixir}}
+#        git push gigalixir master
